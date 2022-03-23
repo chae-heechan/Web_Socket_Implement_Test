@@ -69,6 +69,8 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = 'mysite.routing.application'
+
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
 
