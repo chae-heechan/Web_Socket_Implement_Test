@@ -5,6 +5,7 @@
     <title>Chat Room</title>
 </head>
 <body>
+    <!-- <dev id="chat-box" width="100" height="100" border-color="black" flex="true"></dev> -->
     <textarea id="chat-log" cols="100" rows="20"></textarea><br>
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send">
@@ -24,6 +25,12 @@
             const data = JSON.parse(e.data);
             document.querySelector('#chat-log').value += (data.message + '\n');
         };
+        // chatSocket.onmessage = function(e) {
+        //     const data = JSON.parse(e.data);
+        //     const chat = document.createElement('dev');
+        //     chat.append(data.message);
+        //     document.querySelector("#chat-box").append(chat);
+        // }
 
         chatSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
