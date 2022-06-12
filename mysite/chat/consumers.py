@@ -7,7 +7,7 @@ class ChatConsumer(WebsocketConsumer):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
 
-        # Join room group
+        # 채팅방 입장
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
             self.channel_name
@@ -16,18 +16,19 @@ class ChatConsumer(WebsocketConsumer):
         self.accept()
 
     def disconnect(self, close_code):
-        # Leave room group
+
+        # 채팅방 퇴장
         async_to_sync(self.channel_layer.group_discard)(
             self.room_group_name,
             self.channel_name
         )
 
-    # Receive message from WebSocket
+    # 메시지 수신(from 웹소켓)
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
 
-        # Send message to room group
+        # 채팅 방으로 메시지 송신
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
@@ -36,11 +37,11 @@ class ChatConsumer(WebsocketConsumer):
             }
         )
 
-    # Receive message from room group
+    # 메시지 수신(from 채팅방)
     def chat_message(self, event):
         message = event['message']
 
-        # Send message to WebSocket
+        # 웹소켓으로 메시지 송신
         self.send(text_data=json.dumps({
             'message': message
         }))
